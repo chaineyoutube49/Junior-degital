@@ -15,6 +15,23 @@ export default defineConfig(({mode}) => {
         '@': path.resolve(__dirname, '.'),
       },
     },
+    build: {
+      outDir: 'dist',
+      rollupOptions: {
+        input: {
+          main: path.resolve(__dirname, 'index.html'),
+        },
+        output: {
+          assetFileNames: (assetInfo) => {
+            // Garder les noms originaux pour les médias
+            if (assetInfo.name && assetInfo.name.match(/\.(mp4|jpg|png|jpeg|gif|svg|webm|ogg|mp3|wav)$/)) {
+              return assetInfo.name;
+            }
+            return 'assets/[name].[hash][extname]';
+          },
+        },
+      },
+    },
     server: {
       hmr: process.env.DISABLE_HMR !== 'true',
     },
